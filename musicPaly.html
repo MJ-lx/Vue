@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="css/vueMusic.css"/>
+	</head>
+	<body>
+		<div class="wrap">
+			<!-- 音乐播放器主体 -->
+			<div class="contain">
+				<!-- 搜索区 -->
+				<div class="search">
+					<p>畅听</p>
+					<input type="text" v-model="query" v-on:keyup.enter="searchMusic"/>
+				</div>
+				<!-- 音乐显示区 -->
+				<div class="content">
+					<!-- 音乐列表 -->
+					<div class="song_list">
+						<ul>
+							<li v-for="item in musicList">
+								<a @click="musicPlay(item.id)" href="javascript:;"></a>
+								<b>{{item.name}}</b>
+								<span v-if="item.mvid!=0" @click="getMv(item.mvid)"></span>
+							</li>
+						</ul>
+						<img src="img/line.png" class="switch_btn" alt="">
+					</div>
+				<!-- 播放动画区 -->
+					<div class="play_con" :class="{playing:isPlaying}">
+						<!-- 播放条 -->
+						<img src="img/player_bar.png" class="play_bar" alt="">
+						<!-- 黑胶唱片 -->
+						<img src="img/disc.png" class="disc autoRotate" alt="">
+						<!-- 歌曲封面 -->
+						<img :src="musicImgUrl" class="cover autoRotate">
+					</div>
+				<!-- 评论显示区 -->
+					<div class="song_comment">
+						<h5>热门评论</h5>
+						<div class="comment_item">
+						<!-- 自定义列表 -->
+							<dl v-for="item in musicComment">
+								<dt><img :src="item.user.avatarUrl"/></dt>
+								<dd class="name">{{item.user.nickname}}</dd>
+								<dd class="detail">{{item.content}}</dd>
+							</dl>
+						</div>
+						<img src="img/line.png" class="right_line">
+					</div>
+				</div>
+				<!-- 播放控件 -->
+				<div class="play">
+					 <audio ref='audio' @pause="pause" @play="play" :src="musicUrl" controls autoplay loop class="myaudio">
+				</div>
+				<!-- Mv播放区 -->
+				<div class="musicMv" v-show="isShow" style="display: none;">
+					<video :src="musicMvUrl" controls="controls"></video>
+					<div class="mask" @click="hide"></div>
+					<img class="shutoff"/>
+				</div>
+			</div>		
+		</div>
+		
+		<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- 官网提供的 axios 在线地址 -->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="js/musicVue.js"></script>
+	</body>
+</html>
